@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Turing Machine Visualizer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="js/main.js"></script>
+  <script src="js/simulation.js"></script>
+  <script src="js/visualizer.js"></script>
+  <script src="js/tape.js"></script>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PAGE 1 – LANDING
+═══════════════════════════════════════════════════════════════ -->
+<section id="page-landing" class="page active">
+  <div class="landing-bg">
+    <canvas id="particle-canvas"></canvas>
+  </div>
+
+  <nav class="top-nav">
+    <div class="nav-brand">
+      <span class="nav-icon">⊢</span>
+      <span>TM Visualizer</span>
+    </div>
+  </nav>
+
+  <div class="landing-content">
+    <div class="landing-badge">Theory of Computation</div>
+    <h1 class="landing-title">
+      Turing<br/><em>Machine</em><br/>Visualizer
+    </h1>
+    <p class="landing-desc">
+      A <strong>Turing Machine</strong> is the theoretical bedrock of all modern computing —
+      an abstract model consisting of an infinite tape, a read/write head, and a finite
+      set of states connected by transition rules. Every algorithm you've ever run
+      is, at its core, a Turing Machine. Explore that idea interactively here.
+    </p>
+    <div class="landing-actions">
+      <button class="btn btn-primary" onclick="navigate('page-select')">
+        Start Simulation <span class="btn-arrow">→</span>
+      </button>
+      <button class="btn btn-ghost" onclick="navigate('page-learn')">
+        Learn Concepts
+      </button>
+    </div>
+    <div class="landing-stats">
+      <div class="stat"><span>3</span><label>Machines</label></div>
+      <div class="stat"><span>∞</span><label>Tape Length</label></div>
+      <div class="stat"><span>δ</span><label>Transitions</label></div>
+    </div>
+  </div>
+
+  <div class="scroll-indicator">
+    <span class="scroll-dot"></span>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PAGE 2 – LEARN CONCEPTS
+═══════════════════════════════════════════════════════════════ -->
+<section id="page-learn" class="page">
+  <nav class="top-nav sticky">
+    <button class="nav-back" onclick="navigate('page-landing')">← Back</button>
+    <div class="nav-brand"><span class="nav-icon">⊢</span><span>TM Visualizer</span></div>
+  </nav>
+
+  <div class="learn-content container">
+    <h2 class="section-title">Theory of Computation</h2>
+    <p class="section-subtitle">Core concepts behind the Turing Machine model</p>
+
+    <div class="concept-grid">
+      <div class="concept-card">
+        <div class="concept-icon">📼</div>
+        <h3>The Tape</h3>
+        <p>An infinite sequence of cells, each storing one symbol from the tape alphabet Γ. The tape is initially populated with the input string; all other cells hold the blank symbol (B).</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-icon">🔵</div>
+        <h3>States (Q)</h3>
+        <p>A finite set of internal configurations the machine can be in. Always includes a designated start state q₀, an accept state q_a, and a reject state q_r.</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-icon">δ</div>
+        <h3>Transition Function δ</h3>
+        <p>The "program" of the machine: δ: Q × Γ → Q × Γ × {L, R}. Given the current state and tape symbol, it produces a new state, writes a symbol, and moves the head Left or Right.</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-icon">✓</div>
+        <h3>Acceptance</h3>
+        <p>A string w is <em>accepted</em> if the machine enters q_accept at any point during computation. It is <em>rejected</em> if it enters q_reject or if no transition is defined (implicit reject).</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-icon">⚙️</div>
+        <h3>Configuration</h3>
+        <p>A snapshot of the machine at any moment: (current state, tape contents, head position). The simulation history is a sequence of configurations, one per step.</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-icon">∞</div>
+        <h3>Turing-Completeness</h3>
+        <p>A system is Turing-complete if it can simulate any Turing Machine. Modern CPUs, programming languages, and even cellular automata (Rule 110) are all Turing-complete.</p>
+      </div>
+    </div>
+
+    <div class="tm-formal">
+      <h3>Formal 7-Tuple Definition</h3>
+      <div class="formal-box">
+        <p><strong>M = (Q, Σ, Γ, δ, q₀, q_accept, q_reject)</strong></p>
+        <ul>
+          <li><strong>Q</strong> — finite set of states</li>
+          <li><strong>Σ</strong> — input alphabet (does not contain blank B)</li>
+          <li><strong>Γ</strong> — tape alphabet (Σ ⊂ Γ, B ∈ Γ)</li>
+          <li><strong>δ</strong> — transition function: Q × Γ → Q × Γ × {L, R}</li>
+          <li><strong>q₀</strong> — start state (q₀ ∈ Q)</li>
+          <li><strong>q_accept</strong> — accept state</li>
+          <li><strong>q_reject</strong> — reject state (q_reject ≠ q_accept)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="center-btn">
+      <button class="btn btn-primary" onclick="navigate('page-select')">
+        Try the Simulator →
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PAGE 3 – MACHINE SELECTION
+═══════════════════════════════════════════════════════════════ -->
+<section id="page-select" class="page">
+  <nav class="top-nav sticky">
+    <button class="nav-back" onclick="navigate('page-landing')">← Back</button>
+    <div class="nav-brand"><span class="nav-icon">⊢</span><span>TM Visualizer</span></div>
+  </nav>
+
+  <div class="container">
+    <h2 class="section-title">Select a Machine</h2>
+    <p class="section-subtitle">Choose a Turing Machine to simulate</p>
+
+    <div id="machine-cards" class="machine-grid">
+      <!-- Populated by JS -->
+      <div class="machine-skeleton"></div>
+      <div class="machine-skeleton"></div>
+      <div class="machine-skeleton"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PAGE 4 – VISUALIZER + SIMULATOR
+═══════════════════════════════════════════════════════════════ -->
+<section id="page-sim" class="page">
+  <nav class="top-nav sticky">
+    <button class="nav-back" onclick="navigate('page-select')">← Machines</button>
+    <div class="nav-brand"><span class="nav-icon">⊢</span><span>TM Visualizer</span></div>
+    <div id="machine-name-badge" class="machine-badge"></div>
+  </nav>
+
+  <div class="sim-layout">
+
+    <!-- LEFT PANEL: State Diagram -->
+    <aside class="panel panel-graph">
+      <div class="panel-header">
+        <h3>State Diagram</h3>
+        <div class="panel-header-actions">
+          <button class="icon-btn" id="zoom-in-btn"  title="Zoom In">+</button>
+          <button class="icon-btn" id="zoom-out-btn" title="Zoom Out">−</button>
+          <button class="icon-btn" id="reset-zoom-btn" title="Reset Zoom">⊙</button>
+        </div>
+      </div>
+      <div id="graph-container"></div>
+      <div class="graph-legend">
+        <span class="legend-item legend-start">Start</span>
+        <span class="legend-item legend-accept">Accept</span>
+        <span class="legend-item legend-reject">Reject</span>
+        <span class="legend-item legend-active">Active</span>
+      </div>
+    </aside>
+
+    <!-- RIGHT PANEL: Simulation Controls + Tape -->
+    <main class="panel panel-sim">
+
+      <!-- Input -->
+      <div class="sim-section" id="input-section">
+        <div class="panel-header">
+          <h3>Input</h3>
+        </div>
+        <div class="input-row">
+          <div class="input-wrapper">
+            <input
+              type="text"
+              id="input-string"
+              class="tape-input"
+              placeholder="Enter binary string…"
+              maxlength="64"
+              autocomplete="off"
+              spellcheck="false"
+            />
+            <div id="input-error" class="input-error"></div>
+          </div>
+          <button class="btn btn-primary" id="check-btn" onclick="handleCheck()">
+            Check String
+          </button>
+        </div>
+        <div class="example-chips" id="example-chips"></div>
+      </div>
+
+      <!-- Tape Visualization -->
+      <div class="sim-section" id="tape-section" style="display:none">
+        <div class="panel-header">
+          <h3>Tape</h3>
+          <span id="step-counter" class="step-counter">Step 0</span>
+        </div>
+        <div class="tape-wrapper">
+          <div id="tape-scroll">
+            <div id="tape-cells"></div>
+          </div>
+          <div id="head-indicator" class="head-indicator">▲</div>
+        </div>
+      </div>
+
+      <!-- Transition Info -->
+      <div class="sim-section" id="transition-section" style="display:none">
+        <div class="panel-header"><h3>Current Transition</h3></div>
+        <div class="transition-box">
+          <div class="transition-formula" id="transition-formula">—</div>
+          <div class="transition-meta">
+            <span>State: <strong id="current-state-label">—</strong></span>
+            <span>Read: <strong id="read-symbol-label">—</strong></span>
+            <span>Write: <strong id="write-symbol-label">—</strong></span>
+            <span>Move: <strong id="direction-label">—</strong></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="sim-section" id="controls-section" style="display:none">
+        <div class="panel-header"><h3>Controls</h3></div>
+        <div class="controls-row">
+          <button class="ctrl-btn" id="btn-prev"     onclick="stepBack()"   title="Previous Step">⏮</button>
+          <button class="ctrl-btn" id="btn-step"     onclick="stepForward()" title="Next Step">⏭</button>
+          <button class="ctrl-btn" id="btn-play"     onclick="togglePlay()"  title="Auto-Run">▶</button>
+          <button class="ctrl-btn" id="btn-reset"    onclick="resetSim()"    title="Reset">⟳</button>
+        </div>
+        <div class="speed-row">
+          <label for="speed-slider">Speed</label>
+          <input type="range" id="speed-slider" min="1" max="10" value="5" />
+          <span id="speed-label">5x</span>
+        </div>
+      </div>
+
+      <!-- History Log -->
+      <div class="sim-section" id="history-section" style="display:none">
+        <div class="panel-header">
+          <h3>Execution Log</h3>
+          <button class="icon-btn" id="toggle-log-btn" onclick="toggleLog()">▼</button>
+        </div>
+        <div id="history-log" class="history-log"></div>
+      </div>
+
+      <!-- Result Banner -->
+      <div id="result-banner" class="result-banner" style="display:none">
+        <div class="result-icon" id="result-icon"></div>
+        <div class="result-text" id="result-text"></div>
+        <div class="result-sub"  id="result-sub"></div>
+        <button class="btn btn-ghost" style="margin-top:12px" onclick="resetSim()">Try Another</button>
+      </div>
+
+    </main>
+  </div>
+</section>
+
+<!-- ── Scripts ── -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script src="js/simulator.js"></script>
+<script src="js/visualizer.js"></script>
+<script src="js/tape.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
