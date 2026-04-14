@@ -1,10 +1,3 @@
-/**
- * main.js - Application Controller (Fixed)
- *
- * KEY FIX: UI step wrappers are named uiStepForward / uiStepBack
- * so they never override the original stepForward / stepBack
- * functions in simulator.js (which startPlay also calls internally).
- */
 
 var _machines        = [];
 var _selectedMachine = null;
@@ -12,7 +5,7 @@ var _prevHeadPos     = 0;
 var _logCollapsed    = false;
 var _graphDef        = null;
 
-/* ── Particle Background ─────────────────────────────────── */
+
 (function initParticles() {
   var canvas = document.getElementById('particle-canvas');
   if (!canvas) return;
@@ -323,11 +316,6 @@ window.toggleLog = toggleLog;
 
 /* ── Step Controls (UI wrappers — different names from simulator!) */
 
-/**
- * uiStepForward / uiStepBack are the UI-level wrappers.
- * They call stepForward() / stepBack() from simulator.js directly.
- * We do NOT override window.stepForward to avoid infinite recursion.
- */
 function uiStepForward() {
   stopPlay();
   var cfg = stepForward();   // calls the original from simulator.js
